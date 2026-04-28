@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
 import router from './routes/routes.api';
+import sequelize from './config/database';
 
 dotenv.config();
 
@@ -14,6 +15,20 @@ app.use(express.json());
 // Uso das rotas
 app.use('/api', router);
 
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
-});
+async function startServer() {
+    try {
+        await sequelize.authenticate();
+        console.log('✅ Conexão com o MySQL estabelecida com sucesso.');
+
+        await sequelize.sync({ alter: true });
+        console.log('✅ Modelos sincronizados com o banco de dados.');
+
+        app.listen(PORT, () => {
+            console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
+        });
+    } catch (error) {
+        console.error('❌ Erro ao iniciar o servidor:', error);
+    }
+}
+
+startServer();
