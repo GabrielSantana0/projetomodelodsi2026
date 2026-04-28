@@ -15,7 +15,6 @@ router.get('/outra-rota', (req: Request, res: Response) => {
     res.json({ message: "Aqui é outra Rota!" });
 });
 
-// Rota de Registro (Inserir Usuário)
 router.post('/register', async (req: Request, res: Response) => {
     const { nome, email, senha } = req.body;
     const user = await User.create({ nome, email, senha });

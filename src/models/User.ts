@@ -17,7 +17,6 @@ User.init({
     sequelize,
     tableName: 'usuarios',
     hooks: {
-        // Criptografia automática antes de salvar no MySQL
         beforeSave: async (user: any) => {
             user.senha = await bcrypt.hash(user.senha, 10);
         }
