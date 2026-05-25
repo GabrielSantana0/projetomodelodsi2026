@@ -44,4 +44,21 @@ router.get('/perfil', constAuthMiddleware, (req, res) => {
     });
 });
 
+router.put('/user', constAuthMiddleware, async (req: Request, res: Response) => {
+    const { nome, email } = req.body;
+    const userId = req.user?.id;
+
+    await User.update({ nome, email }, { where: { id: userId } });
+
+    res.json({ message: "Dados atualizados com sucesso!" });
+});
+
+router.delete('/user', constAuthMiddleware, async (req: Request, res: Response) => {
+    const userId = req.user?.id;
+
+    await User.destroy({ where: { id: userId } });
+
+    res.json({ message: "Conta removida do sistema." });
+});
+
 export default router;
